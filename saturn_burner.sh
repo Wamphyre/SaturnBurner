@@ -4,39 +4,39 @@ echo "================="
 echo "SATURN BURNER 1.0 for FreeBSD"
 echo "================="
 echo ""
-echo "- Introduce disco"
+echo "- Insert disc"
 cdcontrol eject
 echo ""
-read -rp "- Pulsa "F" tras insertar disco " KEY
-    if [ "$KEY" = "F" ]; then
+read -rp "- Press 'F' after inserting the disc " KEY
+if [ "$KEY" = "F" ]; then
     cdcontrol close
-    else
-     echo "Tecla no reconocida"
-    fi
+else
+    echo "Key not recognized"
+fi
 echo ""
-# Leemos la ruta del directorio con los archivos .cue
-echo "- Mostrando lista de directorios"
+# Read the path of the directory containing the .cue files
+echo "- Showing list of directories"
 echo ""
-ls "PON AQUÍ LA RUTA DE TU DIRECTORIO DE BACKUPS" | sort
+ls "PUT YOUR BACKUP DIRECTORY PATH HERE" | sort
 echo ""
-read -rp "- Indica directorio con fichero .cue: " DIR
+read -rp "- Specify the directory with the .cue file: " DIR
 echo ""
-cd "PON AQUÍ LA RUTA DE TU DIRECTORIO DE BACKUPS""$DIR"
+cd "PUT YOUR BACKUP DIRECTORY PATH HERE""$DIR"
 
-# Buscamos el archivo .cue
+# Search for the .cue file
 CUE=$(ls | grep .cue)
 
-    # Mostramos al usuario el archivo .cue encontrado y confirmamos si desea grabarlo
-    read -rp "¿Quieres quemar el fichero $CUE (S/N)?: " SN
+# Show the user the found .cue file and confirm if they want to burn it
+read -rp "Do you want to burn the file $CUE (S/N)?: " SN
+echo ""
+if [ "$SN" = "S" ]; then
+    echo "- Burning disc..."
     echo ""
-    if [ "$SN" = "S" ]; then
-        echo "- Grabando disco..."
-        echo ""
-        # Invocamos cdrdao
-        cdrdao write --device /dev/cd0 --swap --speed 16 *.cue
-        cdcontrol eject
-        echo ""
-        echo "Grabacion completada"
-    else
-        echo "No se realizó la grabación."
-    fi
+    # Invoke cdrdao
+    cdrdao write --device /dev/cd0 --swap --speed 16 *.cue
+    cdcontrol eject
+    echo ""
+    echo "Burn completed"
+else
+    echo "Burn not performed."
+fi
